@@ -79,7 +79,7 @@
     <!--resource 설정하기-->
     <!--** 면 계층 상관없이 다 검색한다.-->
     <!--webapp 밑에서 찾기시작한다.-->
-    <mvc:resources mapping="/resources/**" location="/resources"/>
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <!--
         기본 viewresolver 등록하기
