@@ -13,22 +13,18 @@ import java.util.Map;
 public class BoardDaoImpl implements BoardDao {
     @Override
     public List<Board> findBoard(SqlSession session, Map<String, Integer> param) {
-//        Integer cPage = param.get("cPage");
-//        Integer numPerPage = param.get("numPerPage");
-//
-//        //원하는 범위 만큼만 가져오는 객체
-//        RowBounds rowBounds
-//                = new RowBounds((cPage-1) * numPerPage, numPerPage);
 
         //넘어온 Map에서 cPage 와 ,perPage를 파라메터로 받는다.
         Integer cPage = param.get("cPage");
         Integer numPerPage = param.get("numPerPage");
 
         //마이바티스에서 제공하는 RowBounds 객체를 이용하면,
-        //
+        //필요한 만큼의 데이터를 가져올 수있음
+
+        RowBounds rowBounds = new RowBounds((cPage-1)*numPerPage, numPerPage);
 
 
-
+        //파라메터가 없으므로 null 그리고, rowBounds 객체를 넣어준다.
         return session.selectList("board.findBoard",null, rowBounds);
     }
 
