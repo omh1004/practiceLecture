@@ -2,6 +2,7 @@ package com.bs.spring.board.controller;
 
 import com.bs.spring.board.model.dto.Board;
 import com.bs.spring.board.model.service.BoardService;
+import com.bs.spring.common.PageFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -26,10 +27,19 @@ public class BoardController {
     @RequestMapping("/boardList.do")
     public void boardList(Model model
             , @RequestParam(defaultValue="1") int cPage
-            , @RequestParam(defaultValue="10") int perPage
+            , @RequestParam(defaultValue="10") int numPerPage
             , HttpSession request){
 
-            List<Board> boardList = boardService.findBoard(Map.of("cPage", cPage,"perPage",perPage));
+            List<Board> boardList = boardService.findBoard(Map.of("cPage", cPage,"numPerPage",numPerPage));
+
+            int boardCount = boardService.boardCount();
+
+            String pageBar = PageFactory.pageBar(cPage,numPerPage,boardCount, "boardList.do");
+
+            model.addAttribute("boardList", boardList);
+            model.addAttribute("pageBar", pageBar);
+            model.addAttribute("totalContents", boardCount);
+
 
     }
 
