@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="board">
+
+    <resultMap id="boardMap" type="board">
+        <id column="boardno" property="boardNo"/>
+        <result column="boardtitle" property="boardTitle"/>
+        <result column="boardwriter" property="boardWriter"/>
+        <result column="boardcontent" property="boardContent"/>
+        <result column="boardreadcount" property="boardReadCount"/>
+        <result column="boarddate" property="boardDate"/>
+        <collection property="files" ofType="attachment">
+            <id column="attachmentno" property="attachmentNo"/>
+            <result column="originalfilename" property="originalFileName"/>
+            <result column="renamedfilename" property="renamedFileName"/>
+            <result column="downloadcount" property="downloadCount"/>
+            <result column="uploaddate" property="uploadDate"/>
+        </collection>
+    </resultMap>
+
+    <select id="findBoard" resultMap="boardMap">
+        SELECT * FROM BOARD LEFT JOIN ATTACHMENT USING(BOARDNO)
+    </select>
+    <select id="boardCount" resultType="_int">
+        select count(*) from board
+    </select>
+    <insert id="insertBoard" parameterType="board" >
+        INSERT INTO BOARD values(SEQ_BOARDNO.nextval,#{boardTitle},#{boardWriter},#{boardContent},DEFAULT,DEFAULT)
+        <selectKey keyProperty="boardNo" resultType="long" order="AFTER">
+            select SEQ_BOARDNO.currval FROM DUAL s
+        </selectKey>
+    </insert>
+    <insert id="insertAttachment" parameterType="attachment" >
+        INSERT INTO ATTACHMENT values(
+                                      SEQ_ATTACHMENTNO.nextval
+                                     ,#{boardNo}
+                                     ,#{originalFileName}
+                                     ,#{renamedFileName}
+                                     ,DEFAULT
+                                     ,DEFAULT,default)
+    </insert>
+
+
+    <select id="findBoardByNo" parameterType="_int" resultMap="boardMap"> SELECT * FROM BOARD LEFT JOIN ATTACHMENT USING(BOARDNO) WHERE BOARDNO=#{no} </select>
+
+    <select id="findAttachByNo" parameterType="_int" resultType="attachment">
+        select * from attachment where boardno=#{no}
+    </select>
+
+</mapper>

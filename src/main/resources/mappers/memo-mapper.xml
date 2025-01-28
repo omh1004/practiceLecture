@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memo">
+    <select id="searchMemoListAll" resultType="memo">
+            select * from memo
+    </select>
+    <insert id="addMemo" parameterType="memo">
+        insert into memo values(SEQ_MEMONO.nextval,#{memo},#{password},SYSDATE)
+    </insert>
+    <delete id="deleteMemo" parameterType="string">
+        delete from memo where memono = #{id}
+    </delete>
+
+</mapper>

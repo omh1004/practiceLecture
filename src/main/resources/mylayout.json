@@ -1,0 +1,21 @@
+{
+  "level": {
+    "$resolver": "level",
+    "field": "name"
+  },
+  "logger": {
+    "$resolver": "logger",
+    "field": "name"
+  },
+  "instant":{
+    "$resolver": "timestamp",
+    "pattern": {
+      "format":"yyyy-MM-dd'T'HH:mm:ss",
+      "timezone": "UTC"
+    }
+  },
+  "message": {
+    "$resolver": "message",
+    "stringfield": true
+  }
+}

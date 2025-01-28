@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/websocket https://www.springframework.org/schema/websocket/spring-websocket.xsd">
+    <!--
+            spring bean 등록하기
+            bean태그를 이용해서 등록
+            id: bean을 구분하는 이름
+            class: spring bean 으로 등록할 클래스, 패키지명.클래스명으로 작성
+    -->
+
+    <!--기본생성자로 클래스를 생성하게함 -->
+    <bean id="animal" class="com.bs.spring.test.model.dto.Animal"/>
+    <!--매개변수있는 생성자로 클래스를 생성하게함 Spring Bean설정하기  -->
+    <bean id="animal2" class="com.bs.spring.test.model.dto.Animal">
+        <constructor-arg index="0" value="설기"/>
+        <constructor-arg index="1" value="1"/>
+        <constructor-arg index="2" value="남자"/>
+        <constructor-arg index="3" value="3.12"/>
+    </bean>
+    <!--
+        setter를 이용해서 springbean의 초기값 세팅하기
+    -->
+    <bean id="animal3" class="com.bs.spring.test.model.dto.Animal">
+        <property name="name" value="루루"/>
+    </bean>
+    <!--
+        다른 객체를 의존하고 있을때, Spring bean 등록하기
+        spring bean 으로 등록할 클래스의 필드에 다른 클래스가 있을떄,
+        ref 속성을 이용해서 다른 spring bean을 참조함
+    -->
+    <bean id="person" class="com.bs.spring.test.model.dto.Person">
+        <property name="animal" ref="animal2"/>
+    </bean>
+    <bean id="person1" class="com.bs.spring.test.model.dto.Person">
+        <constructor-arg index="0" value="유병승"/>
+        <constructor-arg index="1" value="19"/>
+        <constructor-arg index="2" value="경기도 시흥시"/>
+        <constructor-arg index="3" ref="animal3"/>
+    </bean>
+    <!--
+            spring bean을 생성, 소멸할때 특정 로직을 실행시킬수 있다.
+            생성 : init-method속성을 이용해서 설정
+            소멸 : destroy-method속성을 이용해서 설정을 한다.
+    -->
+    <bean id="animal4" class="com.bs.spring.test.model.dto.Animal"
+          init-method="initTest" destroy-method="destroyTest">
+        <property name="name" value="뽀삐"/>
+        <property name="age" value="1"/>
+        <property name="gender" value="여"/>
+        <property name="weight" value="4.3"/>
+    </bean>
+
+
+
+    <!--
+        어노테이션으로 등록된 spring bean 찾기
+        <context:componet-scan>태그를 이용 -> springbean 검색하는 기준을 설정
+        basepackage="기준패키지"
+        context 가 붙은 것은 별도의 설정이 필요하다.
+    -->
+
+    <!--com.bs.spring 패키지 내부에 있는 모든 클래스 검색 . -->
+    <context:component-scan base-package="com.bs.spring"/>
+    <!--
+        mvc모듈에서 @Controller 기능 수행하기
+        <mvc:anotaion-driven/> 태그를 이용해서 controller 활성화
+    -->
+    <mvc:annotation-driven />
+
+    <!--web mvc 설정하기-->
+    <!--resource 설정하기-->
+    <!--** 면 계층 상관없이 다 검색한다.-->
+    <!--webapp 밑에서 찾기시작한다.-->
+    <mvc:resources mapping="/resources/**" location="/resources"/>
+
+    <!--
+        기본 viewresolver 등록하기
+        클라이언트에게 응답을 처리하는 객체를 말한다.
+        JSP로 응답하는 viewresolver 등록하기
+        MVC모듈이 해당 객체를 가져다 쓰도록 만들었다.
+        뷰리졸버는 매핑값에서 반환형 있을떄, 뷰리졸버 실행된다.
+        기본적으로 String 값이 반환된다.
+        viewResolver를 재정의 해서 쓸수 있다.
+
+    -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="suffix" value=".jsp"/>
+        <property name="prefix" value="/WEB-INF/views/"/>
+    </bean>
+    <!--인터셉터이용하기-->
+    <!--    <bean id="basicinter" class="interceptor.common.com.mh.omhCore.BasicInterceptor"/>-->
+
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/member/**"/>
+            <ref bean="basicinter"/>
+        </mvc:interceptor>
+        <!--        <mvc:interceptor>-->
+        <!--            <mvc:mapping path="/**/"/>-->
+        <!--            <mvc:exclude-mapping path="/"/>-->
+        <!--            <mvc:exclude-mapping path="/member/**"/>-->
+        <!--            <mvc:exclude-mapping path="/resources/**"/>-->
+        <!--            <ref bean="loginCheck"/>-->
+        <!--        </mvc:interceptor>-->
+    </mvc:interceptors>
+
+    <!--multipart resolver 등록하기-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600"/>
+    </bean>
+
+    <!--웹소켓서버 등록하기-->
+    <bean id="chatting" class="com.bs.spring.common.websocket.ChattingServer"/>
+
+    <websocket:handlers>
+        <websocket:mapping path="/chatting" handler="chatting"/>
+        <websocket:handshake-interceptors>
+            <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+
+
+
+
+
+</beans>

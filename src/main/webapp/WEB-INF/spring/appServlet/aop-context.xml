@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+    <!-- AOP설정하기
+        1.aspect클래스를 bean으로 등록
+        2.aop설정(적용할 대상설정(pointcut), 실행시점(advice),실행메소드설정)
+
+            공통으로 실행할 객체
+            <aop:config>태그
+             <aop:aspect ref="생성된객체참조">
+                <aop:pointcut expression="표현식"> 적용할 대상(메소드)-> 종단 관심사 실행 전후 -> 표현식 표현
+                <aop:before||after||around||afterReturning||afterThrowing
+                method="" pointcut-ref="">
+
+        -->
+
+<!--    <bean id="xmlAspect" class="aop.common.com.mh.omhCore.XmlAspect"/>-->
+<!--    <aop:config>-->
+<!--        <aop:aspect ref="xmlAspect">-->
+<!--            &lt;!&ndash;접근제한자 메소드명 패키지 밑에 모든 패키지에 어떠한매개변수를 같는 모든메소드&ndash;&gt;-->
+<!--            &lt;!&ndash;메소드 실행전 &ndash;&gt;-->
+<!--            <aop:pointcut id="memoPoint" expression="execution(* com.bs.spring.memo..*(..))"/>-->
+<!--            <aop:before method="before" pointcut-ref="memoPoint"/>-->
+<!--            <aop:after method="after" pointcut-ref="memoPoint"/>-->
+<!--        </aop:aspect>-->
+<!--    </aop:config>-->
+
+    <!--
+        어노테이션방식으로 AOP설정하기
+        AOP어노테이션을 읽어오도록 설정
+    -->
+    <aop:aspectj-autoproxy/>
+
+
+</beans>

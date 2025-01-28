@@ -1,0 +1,32 @@
+<Configuration>
+    <!-- 출력방식에 대한 설정 -->
+    <Appenders>
+        <!-- console에 출력하는 appender -->
+        <Console name="console">
+            <PatternLayout pattern="%-5p %d{yyyy-MM-dd HH:mm:ss}[%l] - %m %n"/>
+            <!-- <JsonTemplateLayout eventTemplateUri="classpath:mylayout.json"/> -->
+        </Console>
+        <RollingFile name="rollingFile" fileName="/Users/ohminhyun/Documents/chunjaeSpring/logs/spring-log.log" filePattern="/Users/ohminhyun/Documents/chunjaeSpring/logs/log-%d{yyyy-MM-dd}.log">
+            <!-- <PatternLayout pattern="%-5p %d{yyyy-MM-dd HH:mm:ss}[%l] - %m %n"/> -->
+            <JsonTemplateLayout eventTemplateUri="classpath:mylayout.json"/>
+            <Policies>
+                <!-- 하루에 한개 -->
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- 출력대상과 출력 leve을 설정 -->
+        <Logger name="com.bs.spring" level="debug">
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Logger name="org.springframework.context" level="INFO"/>
+        <Logger name="org.springframework.core" level="INFO"/>
+        <Logger name="org.springframework.web" level="INFO"/>
+        <Logger name="org.springframework.beans" level="INFO"/>
+        <!-- 최상위 로거로 자식로그가 내용을 상속받음 -->
+        <Root level="INFO">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
