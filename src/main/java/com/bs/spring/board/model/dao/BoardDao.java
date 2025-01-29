@@ -15,5 +15,6 @@ public interface BoardDao {
     int insertAttachment(SqlSession session, Attachment attachment);
     Board findBoardById(SqlSession session, int no);
 
+
     // List<Attachment> findAttachByNo(SqlSession session, int no);
 }

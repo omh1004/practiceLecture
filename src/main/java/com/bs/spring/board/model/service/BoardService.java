@@ -12,4 +12,5 @@ public interface BoardService {
     int insertBoard(Board board, List<Attachment> files);
     int boardCount();
     Board findBoardById(int no);
+    int attachedFile(Board board, Attachment attachment);
 }

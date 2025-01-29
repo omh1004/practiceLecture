@@ -5,8 +5,8 @@
 
   <p>총 ${totalContents }건의 게시물이 있습니다.</p>
   <c:if test="${loginMember!=null}">
-    <button class="btn btn-success" onclick="location
-            .assign('${pageContext.request.contextPath}/board/boardform.do');">
+    <button class="btn btn-success" onclick="
+      location.assign('${pageContext.request.contextPath}/board/boardform.do')">
       작성하기
     </button>
   </c:if>

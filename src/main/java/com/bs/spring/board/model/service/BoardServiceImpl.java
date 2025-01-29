@@ -62,4 +62,27 @@ public class BoardServiceImpl implements BoardService {
     //board.setFiles(files);
     return boardDao.findBoardById(session,no);
   }
+
+  @Override
+  public int attachedFile(Board board, Attachment attachment) {
+
+    //넘어온 데이터를 db에 넣어준다.
+    //이때, 우선 Board 테이블에 board 정보를 넣어주고, 만들어진 BoardNo의 값을
+    //가져와서 Attachment에 첨부파일을 넣어준다.
+int result=0;
+    try {
+      result = boardDao.insertBoard(session, board);
+      attachment.setBoardNo(board.getBoardNo());
+      boardDao.insertAttachment(session, attachment);
+    } catch (RuntimeException e) {
+      e.printStackTrace();
+      throw new MyException("게시글 저장실패");
+    }
+
+
+    return result;
+  }
+
+
+
 }

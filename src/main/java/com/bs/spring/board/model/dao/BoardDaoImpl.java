@@ -47,4 +47,6 @@ public class BoardDaoImpl implements BoardDao {
     public Board findBoardById(SqlSession session, int no) {
         return session.selectOne("board.findBoardByNo", no);
     }
+
+
 }

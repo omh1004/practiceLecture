@@ -3,17 +3,19 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
 <div id="board-container">
-  <form name="boardFrm"
-        action="${pageContext.request.contextPath}/board/writeboard.do"
-        enctype="multipart/form-data" method="post">
+    <!--파일을 업로드할때는 , multipart-form-data로 넘겨줘야한다.
+    기본적으로 설정해주지 않으면, application/x-www-form-unlencoded 이다.
+     그리고 메소드 역시 post로 해주어야한다. -->
+  <form name="boardFrm" method="post"
+      enctype="multipart/form-data"   action="${pageContext.request.contextPath}/board/boardwrite.do">
     <input type="text" class="form-control" placeholder="제목" name="boardTitle" id="boardTitle" required>
     <input type="text" class="form-control" placeholder="아이디 (4글자이상)" name="boardWriter" value="${loginMember.userId}" readonly required>
-    <div class="input-group mb-3" style="padding:0px">
-       <div class="input-group-prepend" style="padding:0px">
-         <button type="button" class="btn btn-outline-success" onclick="addFile()">추가</button>
-         <button type="button" class="btn btn-outline-warning" onclick="delFile()">삭제</button>
-       </div>
-    </div>
+<%--    <div class="input-group mb-3" style="padding:0px">--%>
+<%--       <div class="input-group-prepend" style="padding:0px">--%>
+<%--         <button type="button" class="btn btn-outline-success" onclick="addFile()">추가</button>--%>
+<%--         <button type="button" class="btn btn-outline-warning" onclick="delFile()">삭제</button>--%>
+<%--       </div>--%>
+<%--    </div>--%>
     <div id="basicFileForm" class="input-group mb-3" style="padding:0px;">
       <div class="input-group-prepend" style="padding:0px;">
         <span class="input-group-text">첨부파일1</span>
